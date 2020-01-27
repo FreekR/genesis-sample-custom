@@ -1,0 +1,25 @@
+/*
+Theme Name: Genesis -insert name- Sample
+Description: This is the customised theme based on Genesis Sample 3.2.0, created for the Genesis Framework.
+Author: FJR
+
+Version: 1.0.0
+
+Template: genesis
+
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+Text Domain: genesis-sample
+*/
+
+@import "assets/css/modules/_html-reset.css"
+@import "assets/css/base/_variables"
+@import "assets/css/base/_mixins"
+@import "assets/css/base/_global"
+@import "assets/css/modules/_screen_reader_text"
+@import "assets/css/modules/_structure-layout"
+@import "assets/css/modules/_skip-links"
+@import "assets/css/modules/_site-header"
+@import "assets/css/modules/_site-navigation"
+@import "assets/css/modules/_print-styles"
