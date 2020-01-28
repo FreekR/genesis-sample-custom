@@ -28,6 +28,7 @@ function genesis_sample_home_body_class( $classes ) {
 
 }
 
+
 // Removes Skip Links.
 remove_action( 'genesis_before_header', 'genesis_skip_links', 5 );
 
