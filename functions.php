@@ -199,3 +199,18 @@ function genesis_sample_comments_gravatar( $args ) {
 	return $args;
 
 }
+
+
+
+
+// 
+// DEV
+// 
+
+function add_dev_js() {
+
+	wp_enqueue_script( 'dev_js', get_stylesheet_directory_uri()  . '/assets/js/bundled.js', [], time() );
+}
+
+add_action( 'wp_enqueue_scripts', 'add_dev_js', 10 );
+

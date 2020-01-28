@@ -56,5 +56,21 @@ remove_action( 'genesis_footer', 'genesis_footer_markup_open', 5 );
 remove_action( 'genesis_footer', 'genesis_do_footer' );
 remove_action( 'genesis_footer', 'genesis_footer_markup_close', 15 );
 
+
+// Adding the Page Template
+add_action( 'genesis_entry_content', 'child_home_template' );
+function child_home_template() {
+ ?>
+
+<h1>This is something</h1>
+
+<h2>This is new right?</h2>
+
+<p>thanks</p>
+
+
+<?php 
+};
+
 // Runs the Genesis loop.
 genesis();
