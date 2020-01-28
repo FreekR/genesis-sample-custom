@@ -2,9 +2,9 @@
 /**
  * Genesis Sample.
  *
- * This file adds the landing page template to the Genesis Sample Theme.
+ * This file adds the home page template to the Genesis Sample Theme.
  *
- * Template Name: Landing
+ * Template Name: Home
  *
  * @package Genesis Sample
  * @author  StudioPress
@@ -12,18 +12,18 @@
  * @link    https://www.studiopress.com/
  */
 
-add_filter( 'body_class', 'genesis_sample_landing_body_class' );
+add_filter( 'body_class', 'genesis_sample_home_body_class' );
 /**
- * Adds landing page body class.
+ * Adds home page body class.
  *
  * @since 1.0.0
  *
  * @param array $classes Original body classes.
  * @return array Modified body classes.
  */
-function genesis_sample_landing_body_class( $classes ) {
+function genesis_sample_home_body_class( $classes ) {
 
-	$classes[] = 'landing-page';
+	$classes[] = 'home-page';
 	return $classes;
 
 }
@@ -43,13 +43,6 @@ function genesis_sample_dequeue_skip_links() {
 
 }
 
-// Removes site header elements.
-remove_action( 'genesis_header', 'genesis_header_markup_open', 5 );
-remove_action( 'genesis_header', 'genesis_do_header' );
-remove_action( 'genesis_header', 'genesis_header_markup_close', 15 );
-
-// Removes navigation.
-remove_theme_support( 'genesis-menus' );
 
 // Removes site footer elements.
 remove_action( 'genesis_footer', 'genesis_footer_markup_open', 5 );
@@ -62,11 +55,7 @@ add_action( 'genesis_entry_content', 'child_home_template' );
 function child_home_template() {
  ?>
 
-<h1>This is something</h1>
-
-<h2>This is new right?</h2>
-
-<p>thanks</p>
+<h1>Here's the h1</h1>
 
 
 <?php 

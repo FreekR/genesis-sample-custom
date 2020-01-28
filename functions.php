@@ -201,16 +201,85 @@ function genesis_sample_comments_gravatar( $args ) {
 }
 
 
+// Sample modified stuff
+// Removes all site layouts except full width. Also removes metaboxes.
+
+// Remove unused sidebars
+unregister_sidebar( 'sidebar' );
+unregister_sidebar( 'sidebar-alt' );
+
+// Remove layouts
+genesis_unregister_layout( 'content-sidebar-sidebar' );
+genesis_unregister_layout( 'sidebar-content-sidebar' );
+genesis_unregister_layout( 'sidebar-sidebar-content' );
+genesis_unregister_layout( 'sidebar-content' );
+genesis_unregister_layout( 'content-sidebar' );
+
+// Remove layout metaboxes
+remove_theme_support( 'genesis-inpost-layouts' );
+remove_theme_support( 'genesis-archive-layouts' );
+
+// Use full width layout 
+add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
 
 
-// 
-// DEV
-// 
+// FJR Custom stuff starting here.
 
-function add_dev_js() {
+// Remove edit post link
+add_filter ( 'genesis_edit_post_link' , '__return_false' );
 
-	wp_enqueue_script( 'dev_js', get_stylesheet_directory_uri()  . '/assets/js/bundled.js', [], time() );
+
+// Add Google Fonts
+add_action( 'wp_enqueue_scripts', 'ws_custom_enqueue_styles' );
+
+
+function ws_custom_enqueue_styles() {
+	wp_enqueue_style( 'ws-custom-fonts', '//fonts.googleapis.com/css?family=Poppins:400,500,700|Raleway:400,700', array(), 'CHILD_THEME_VERSION' );
 }
 
-add_action( 'wp_enqueue_scripts', 'add_dev_js', 10 );
+
+// Remove the site title
+remove_action( 'genesis_site_title', 'genesis_seo_site_title' );
+
+
+// Remove entry header
+remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+
+
+// Removes footer widgets.
+remove_action( 'genesis_before_footer', 'genesis_footer_widget_areas' );
+
+
+// Removes site footer elements.
+remove_action( 'genesis_footer', 'genesis_footer_markup_open', 5 );
+remove_action( 'genesis_footer', 'genesis_do_footer' );
+remove_action( 'genesis_footer', 'genesis_footer_markup_close', 15 );
+
+
+// Don't load deprecated genesis functions
+add_filter( 'genesis_load_deprecated', '__return_false' );
+
+
+// Remove editor from pages
+add_action( 'init', function() {
+    remove_post_type_support( 'page', 'editor' );
+}, 99);
+
+
+// Remove Genesis menu link
+remove_theme_support( 'genesis-admin-menu' );
+
+
+// Dequeue Source Sans Pro
+add_action( 'wp_enqueue_scripts', function () {
+	$appearance = genesis_get_config( 'appearance' );
+
+	wp_dequeue_style(
+		genesis_get_theme_handle() . '-fonts',
+		$appearance['fonts-url'],
+		array(),
+		genesis_get_theme_version()
+	);
+	
+}, 20 );
 
