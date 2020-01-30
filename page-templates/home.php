@@ -56,7 +56,7 @@ add_action( 'genesis_entry_content', 'child_home_template' );
 function child_home_template() {
  ?>
 
-<h1>Here's the h1</h1>
+<h1>This is the home template</h1>
 
 
 <?php 

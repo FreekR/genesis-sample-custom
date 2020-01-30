@@ -46,15 +46,7 @@ require_once get_stylesheet_directory() . '/lib/woocommerce/woocommerce-output.p
 // Adds the Genesis Connect WooCommerce notice.
 require_once get_stylesheet_directory() . '/lib/woocommerce/woocommerce-notice.php';
 
-add_action( 'after_setup_theme', 'genesis_child_gutenberg_support' );
-/**
- * Adds Gutenberg opt-in features and styling.
- *
- * @since 2.7.0
- */
-function genesis_child_gutenberg_support() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- using same in all child themes to allow action to be unhooked.
-	require_once get_stylesheet_directory() . '/lib/gutenberg/init.php';
-}
+
 
 // Registers the responsive menus.
 if ( function_exists( 'genesis_register_responsive_menus' ) ) {
@@ -230,11 +222,11 @@ add_filter ( 'genesis_edit_post_link' , '__return_false' );
 
 
 // Add Google Fonts
-add_action( 'wp_enqueue_scripts', 'ws_custom_enqueue_styles' );
+add_action( 'wp_enqueue_scripts', 'fjr_custom_enqueue_styles' );
 
 
-function ws_custom_enqueue_styles() {
-	wp_enqueue_style( 'ws-custom-fonts', '//fonts.googleapis.com/css?family=Poppins:400,500,700|Raleway:400,700', array(), 'CHILD_THEME_VERSION' );
+function fjr_custom_enqueue_styles() {
+	wp_enqueue_style( 'fjr-custom-fonts', '//fonts.googleapis.com/css?family=Lato:400', array(), 'CHILD_THEME_VERSION' );
 }
 
 
@@ -282,4 +274,102 @@ add_action( 'wp_enqueue_scripts', function () {
 	);
 	
 }, 20 );
+
+
+// remove dashicons
+function wpdocs_dequeue_dashicon() {
+	if (current_user_can( 'update_core' )) {
+	    return;
+	}
+	wp_deregister_style('dashicons');
+}
+add_action( 'wp_enqueue_scripts', 'wpdocs_dequeue_dashicon' );
+
+
+
+//Remove JQuery migrate
+function remove_jquery_migrate($scripts)
+{
+    if (!is_admin() && isset($scripts->registered['jquery'])) {
+        $script = $scripts->registered['jquery'];
+        
+        if ($script->deps) { // Check whether the script has any dependencies
+            $script->deps = array_diff($script->deps, array(
+                'jquery-migrate'
+            ));
+        }
+    }
+}
+
+add_action('wp_default_scripts', 'remove_jquery_migrate');
+
+// Disable embed
+function disable_embed(){
+wp_dequeue_script( 'wp-embed' );
+}
+add_action( 'wp_footer', 'disable_embed' );
+
+
+//Remove Gutenberg Block Library CSS from loading on the frontend
+function smartwp_remove_wp_block_library_css(){
+ wp_dequeue_style( 'wp-block-library' );
+ wp_dequeue_style( 'wp-block-library-theme' );
+}
+add_action( 'wp_enqueue_scripts', 'smartwp_remove_wp_block_library_css' );
+
+
+/**
+ * Disable the emoji's
+ */
+function disable_emojis() {
+ remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+ remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+ remove_action( 'wp_print_styles', 'print_emoji_styles' );
+ remove_action( 'admin_print_styles', 'print_emoji_styles' ); 
+ remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+ remove_filter( 'comment_text_rss', 'wp_staticize_emoji' ); 
+ remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+
+// We also take care of Tiny MCE.
+ add_filter( 'tiny_mce_plugins', 'disable_emojis_tinymce' );
+ add_filter( 'wp_resource_hints', 'disable_emojis_remove_dns_prefetch', 10, 2 );
+}
+
+// Let's do this at the init.
+add_action( 'init', 'disable_emojis' );
+
+/**
+ * Filter function used to remove the tinymce emoji plugin.
+ * 
+ * @param array $plugins 
+ * @return array Difference betwen the two arrays
+ */
+function disable_emojis_tinymce( $plugins ) {
+ if ( is_array( $plugins ) ) {
+ return array_diff( $plugins, array( 'wpemoji' ) );
+ } else {
+ return array();
+ }
+}
+
+/**
+ * Remove emoji CDN hostname from DNS prefetching hints.
+ *
+ * @param array $urls URLs to print for resource hints.
+ * @param string $relation_type The relation type the URLs are printed for.
+ * @return array Difference betwen the two arrays.
+ */
+function disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
+ if ( 'dns-prefetch' == $relation_type ) {
+ /** This filter is documented in wp-includes/formatting.php */
+ $emoji_svg_url = apply_filters( 'emoji_svg_url', 'https://s.w.org/images/core/emoji/2/svg/' );
+
+$urls = array_diff( $urls, array( $emoji_svg_url ) );
+ }
+
+return $urls;
+}
+
+
+
 
