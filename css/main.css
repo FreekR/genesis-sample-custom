@@ -13,15 +13,17 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: genesis-sample
 */
 
-@import "/modules/_html-reset";
+@import "/base/_html-reset";
 @import "/base/_variables";
 @import "/base/_mixins";
 @import "/base/_global";
-@import "/modules/_screen-reader-text";
+@import "/base/_screen-reader-text";
+@import "/base/_skip-links";
+@import "/base/_print-styles";
+
 @import "/modules/_structure-layout";
-@import "/modules/_skip-links";
 @import "/modules/_site-header";
 @import "/modules/_site-navigation";
-@import "/modules/_print-styles"
+
 
 
