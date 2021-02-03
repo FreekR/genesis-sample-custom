@@ -20,6 +20,7 @@ Text Domain: genesis-sample
 @import "/base/_screen-reader-text";
 @import "/base/_skip-links";
 @import "/base/_print-styles";
+@import "/base/_utility";
 
 @import "/modules/_structure-layout";
 @import "/modules/_site-header";
