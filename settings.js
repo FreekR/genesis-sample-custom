@@ -1,5 +1,5 @@
 exports.themeLocation = './';
-exports.urlToPreview = 'http://new-workflow.local';
+exports.urlToPreview = 'http://custom-temp.local';
 
 // If you're using Local by Flywheel you will
 // want your settings to be similar to the examples below:
